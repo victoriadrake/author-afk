@@ -27,9 +27,9 @@ PREFIX                      = "Here's a post from my blog."
 SUFFIX                      = "#awesome"
 ```
 
-You will need to [create a new Twitter application and generate API keys](https://apps.twitter.com/) for each `TWITTER_API_VAR`.
+You will need to [create a new Twitter application and generate API keys](https://apps.twitter.com/) for the `TWITTER_API_VAR` values.
 
-The `RSS_FEEDS` variable must be any number of RSS URLs beginning with `http://` or `https://` and ending in `.xml` or `.rss`. It will also parse `.atom` For more on how feeds are parsed, see [gofeed](https://github.com/mmcdole/gofeed). The program expects any more than one URL to be separated by a `;`.
+The `RSS_FEEDS` variable must be any number of RSS URLs beginning with `http://` or `https://` and ending in `.xml` or `.rss`. It will also parse `.atom` For more on how feeds are parsed, see [gofeed](https://github.com/mmcdole/gofeed). The program expects any more than one URLs to be separated by a `;`.
 
 # update.sh
 
@@ -49,7 +49,7 @@ To build the program:
 GOOS=linux go build -o authorAFK
 ```
 
-**NOTE**: If you're not building the function on a Linux machine, you will need to specify the `GOOS` and `GOARCH` environment variables. This allows Go to build your function for another system architecture and ensure compatibility.
+If you're not building the function on a Linux machine, you will need to specify the `GOOS` and `GOARCH` environment variables. This allows Go to build your function for another system architecture and ensure compatibility.
 
 ## Local development
 
@@ -59,7 +59,7 @@ You can invoke this Lambda function locally by running:
 sam local invoke --no-event
 ```
 
-> **See [Serverless Application Model (SAM) HOWTO Guide](https://github.com/awslabs/serverless-application-model/blob/master/HOWTO.md) for more details on how to get started.**
+See [Serverless Application Model (SAM) HOWTO Guide](https://github.com/awslabs/serverless-application-model/blob/master/HOWTO.md) for more details on how to get started.
 
 # Contributing
 
