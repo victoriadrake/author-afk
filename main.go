@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
@@ -14,37 +15,37 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-var (
-	consumerKey       = getenv("TWITTER_CONSUMER_KEY")
-	consumerSecret    = getenv("TWITTER_CONSUMER_SECRET")
-	accessToken       = getenv("TWITTER_ACCESS_TOKEN")
-	accessTokenSecret = getenv("TWITTER_ACCESS_TOKEN_SECRET")
-	rssFeed           = getenv("RSS_FEEDS")
-	prefix			  = getenv("PREFIX")
-	suffix			  = getenv("SUFFIX")
-)
-
 // MyResponse for AWS SAM
 type MyResponse struct {
 	StatusCode string `json:"StatusCode"`
 	Message    string `json:"Body"`
 }
 
-func getenv(name string) string {
+func getenv(name string) (string, error) {
 	v := os.Getenv(name)
 	if v == "" {
-		log.Print("no environment variable " + name)
+		return v, errors.New("no environment variable: " + name)
 	}
-	return v
+	return v, nil
 }
 
-func getRSS(rssFeed string) []string {
-	feeds := os.Getenv("RSS_FEEDS")
-	feedlist := strings.Split(feeds, ";")
-	return feedlist
+func getRSS(rssFeed string) ([]string, error) {
+	if rssFeed == "" {
+		return []string{""}, errors.New("no feeds present")
+	}
+	return strings.Split(rssFeed, ";"), nil
 }
 
 func tweetFeed() (MyResponse, error) {
+
+	consumerKey, err := getenv("TWITTER_CONSUMER_KEY")
+	consumerSecret, err := getenv("TWITTER_CONSUMER_SECRET")
+	accessToken, err := getenv("TWITTER_ACCESS_TOKEN")
+	accessTokenSecret, err := getenv("TWITTER_ACCESS_TOKEN_SECRET")
+	rssFeed, err := getenv("RSS_FEEDS")
+	prefix, err := getenv("PREFIX")
+	suffix, err := getenv("SUFFIX")
+
 	anaconda.SetConsumerKey(consumerKey)
 	anaconda.SetConsumerSecret(consumerSecret)
 	api := anaconda.NewTwitterApi(accessToken, accessTokenSecret)
@@ -53,7 +54,10 @@ func tweetFeed() (MyResponse, error) {
 
 	rand.Seed(time.Now().UnixNano())
 
-	feeds := getRSS(rssFeed)
+	feeds, err := getRSS(rssFeed)
+	if err != nil {
+		log.Fatalf("error getting feed: %v", err.Error())
+	}
 	rss := feeds[rand.Intn(len(feeds))]
 	fp := gofeed.NewParser()
 
