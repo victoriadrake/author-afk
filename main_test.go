@@ -1,11 +1,17 @@
 package main
 
 import (
+	"os"
 	"reflect"
 	"testing"
 )
 
+var SUFFIX = "hashtag"
+
 func Test_getenv(t *testing.T) {
+	if os.Getenv("SUFFIX") == "" {
+		t.Skip("skipping test; SUFFIX not set")
+	}
 	type args struct {
 		name string
 	}
@@ -15,9 +21,8 @@ func Test_getenv(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		
-		
-		
+		{name: "envString", args: args{"SUFFIX"}, want: "hashtag", wantErr: false},
+		{name: "noString", args: args{""}, want: "", wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -43,7 +48,6 @@ func Test_getRSS(t *testing.T) {
 		want    []string
 		wantErr bool
 	}{
-		
 		{name: "twoFeeds", args: args{"https://blog.com/rss.xml;https://blog2.com/rss.xml"}, want: []string{"https://blog.com/rss.xml", "https://blog2.com/rss.xml"}, wantErr: false},
 		{name: "noFeeds", args: args{""}, want: []string{""}, wantErr: true},
 	}
@@ -62,13 +66,15 @@ func Test_getRSS(t *testing.T) {
 }
 
 func Test_tweetFeed(t *testing.T) {
+	if os.Getenv("RSS_FEEDS") == "" {
+		t.Skip("skipping test; RSS_FEEDS not set")
+	}
 	tests := []struct {
 		name    string
 		want    MyResponse
 		wantErr bool
 	}{
-		
-		
+		{name: "doesItTweet", want: MyResponse{Message: "tweeted: ", StatusCode: "200"}, wantErr: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -88,7 +94,7 @@ func Test_main(t *testing.T) {
 	tests := []struct {
 		name string
 	}{
-		
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
