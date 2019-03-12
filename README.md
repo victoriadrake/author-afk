@@ -10,7 +10,7 @@ Optionally, you may add text to the Tweet in front or after the link.
 
 # Set up
 
-For a full walkthrough with screenshots on creating a Lambda function and uploading the code, read [this blog post](https://vickylai.com/verbose/free-twitter-bot-aws-lambda/). Skip to setting environment variables at [this link](https://vickylai.com/verbose/free-twitter-bot-aws-lambda/#2-configure-your-function).
+For a full walkthrough with screenshots on creating a Lambda function and uploading the code, read [this blog post](https://victoria.dev/verbose/free-twitter-bot-aws-lambda/). Skip to setting environment variables at [this link](https://victoria.dev/verbose/free-twitter-bot-aws-lambda/#2-configure-your-function).
 
 Lambda environment variables you can set are as follows, with example values:
 
